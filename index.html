@@ -1,0 +1,51 @@
+<html>
+  <head>
+		<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+		<script
+			src="https://code.jquery.com/jquery-3.3.1.min.js"
+			integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			crossorigin="anonymous"></script>
+  </head>
+  <body>
+		<div id="container" :style="{'background-color': color, width: '100vw', height: '100vh'}">
+			<h1>{{ hello }}</h1>
+			<button v-on:click="changeColor">ChangeMe</button>
+		</div>
+		<script>
+			$(document).ready(function() {
+				new Vue({
+					el: '#container',
+					data: {
+						hello: 'processing',
+						loading: false,
+						color: 'blue',
+						price: 5,
+						posts: []
+					},
+
+					mounted: function() {
+						let vm = this
+						vm.loading = true
+						$.get('/posts', function(posts) {
+							vm.posts = posts
+							vm.loading = false	
+						})
+					},
+
+					computed: {
+						priceString: function() {
+							return "$" + this.price.toString() 
+						}	
+					},
+					methods: {
+						changeColor: function() {
+							this.color = 'red'
+							this.hello = 'hello world'
+							this.$forceUpdate()
+						}
+					}
+				})
+			})
+		</script>
+  </body>
+</html>
